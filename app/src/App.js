@@ -1,34 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import locationService from './services/location'
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'
+import Map from './components/Map'
+//import { Container } from '@mui/material'
 
 function App() {
 
   const [location, setLocation] = useState(null)
 
-  const getCoordinates = async () => {
+
+  useEffect( () => {
+    getInfo()
+  }, [])
+
+  const getInfo = async () => {
     const result = await locationService.getLocation()
-    const coordinates = result.coordinates.reverse()
-    setLocation(coordinates)
-  }
-
-  setTimeout(() => getCoordinates(), 10000)
-
-  const mapStyle = {
-    width: '100vw',
-    height: '100vh'
+    setLocation(result)
   }
 
   if (location) {
     return (
-      <MapContainer center={location} zoom={5} scrollWheelZoom={false} style={mapStyle}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={location}>
-        </Marker>
-      </MapContainer>
+      <>
+        <Map location={location.coordinates.reverse()} getInfo={getInfo}/>
+        <footer>
+          <p> Unit: metric | Coordinates: {`${location.coordinates[1]} , ${location.coordinates[0]}`} | Speed: {location.speed} km/h | Height: {location.height}</p>
+        </footer>
+      </>
     )
   }
   else {
