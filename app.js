@@ -2,7 +2,7 @@ const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
-const authRouter = require('./controllers/auth')
+const locationRouter = require('./controllers/location')
 const middleware = require('./utils/middleware')
 
 app.use(cors())
@@ -11,7 +11,7 @@ app.use(express.json())
 
 app.use(middleware.requestLogger)
 
-app.use('/api/auth', authRouter)
+app.use('/api/location', locationRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
