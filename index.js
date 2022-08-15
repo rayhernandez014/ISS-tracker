@@ -6,10 +6,6 @@ const cron = require('node-cron')
 
 let location = null
 
-app.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`)
-})
-
 cron.schedule('*/5 * * * * *', async () => {
 
   const options = {
@@ -33,5 +29,9 @@ cron.schedule('*/5 * * * * *', async () => {
 const getLocation = () => {
   return location
 }
+
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
+})
 
 exports.location = getLocation
